@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.yihan_shop.dao.MallShippingDao">
+
+    <resultMap type="com.demo.yihan_shop.entity.MallShipping" id="MallShippingMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="receiverName" column="receiver_name" jdbcType="VARCHAR"/>
+        <result property="receiverPhone" column="receiver_phone" jdbcType="VARCHAR"/>
+        <result property="receiverMobile" column="receiver_mobile" jdbcType="VARCHAR"/>
+        <result property="receiverProvince" column="receiver_province" jdbcType="VARCHAR"/>
+        <result property="receiverCity" column="receiver_city" jdbcType="VARCHAR"/>
+        <result property="receiverDistrict" column="receiver_district" jdbcType="VARCHAR"/>
+        <result property="receiverAddress" column="receiver_address" jdbcType="VARCHAR"/>
+        <result property="receiverZip" column="receiver_zip" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="MallShippingMap">
+        select
+          id, user_id, receiver_name, receiver_phone, receiver_mobile, receiver_province, receiver_city, receiver_district, receiver_address, receiver_zip, create_time, update_time
+        from yihan_shop.mall_shipping
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="MallShippingMap">
+        select
+          id, user_id, receiver_name, receiver_phone, receiver_mobile, receiver_province, receiver_city, receiver_district, receiver_address, receiver_zip, create_time, update_time
+        from yihan_shop.mall_shipping
+        where
+        user_id = #{uid}
+        limit #{pageNum}, #{pageSize}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="MallShippingMap">
+        select
+          id, user_id, receiver_name, receiver_phone, receiver_mobile, receiver_province, receiver_city, receiver_district, receiver_address, receiver_zip, create_time, update_time
+        from yihan_shop.mall_shipping
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="receiverName != null and receiverName != ''">
+                and receiver_name = #{receiverName}
+            </if>
+            <if test="receiverPhone != null and receiverPhone != ''">
+                and receiver_phone = #{receiverPhone}
+            </if>
+            <if test="receiverMobile != null and receiverMobile != ''">
+                and receiver_mobile = #{receiverMobile}
+            </if>
+            <if test="receiverProvince != null and receiverProvince != ''">
+                and receiver_province = #{receiverProvince}
+            </if>
+            <if test="receiverCity != null and receiverCity != ''">
+                and receiver_city = #{receiverCity}
+            </if>
+            <if test="receiverDistrict != null and receiverDistrict != ''">
+                and receiver_district = #{receiverDistrict}
+            </if>
+            <if test="receiverAddress != null and receiverAddress != ''">
+                and receiver_address = #{receiverAddress}
+            </if>
+            <if test="receiverZip != null and receiverZip != ''">
+                and receiver_zip = #{receiverZip}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <delete id="deleteByIdandUid">
+        delete from yihan_shop.mall_shipping
+        <where>
+            id = #{shippingId}
+            and
+            user_id =#{uid}
+        </where>
+
+    </delete>
+
+    <!--通过主键修改数据-->
+    <insert id="insert" parameterType="map" keyProperty="id" useGeneratedKeys="true">
+        insert into yihan_shop.mall_shipping(user_id, receiver_name, receiver_phone, receiver_mobile, receiver_province, receiver_city, receiver_district, receiver_address, receiver_zip, create_time, update_time)
+        values (#{userId}, #{receiverName}, #{receiverPhone}, #{receiverMobile}, #{receiverProvince}, #{receiverCity}, #{receiverDistrict}, #{receiverAddress}, #{receiverZip}, #{createTime}, #{updateTime})
+    </insert>
+
+    <!--通过主键删除-->
+    <update id="update">
+        update yihan_shop.mall_shipping
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="receiverName != null and receiverName != ''">
+                receiver_name = #{receiverName},
+            </if>
+            <if test="receiverPhone != null and receiverPhone != ''">
+                receiver_phone = #{receiverPhone},
+            </if>
+            <if test="receiverMobile != null and receiverMobile != ''">
+                receiver_mobile = #{receiverMobile},
+            </if>
+            <if test="receiverProvince != null and receiverProvince != ''">
+                receiver_province = #{receiverProvince},
+            </if>
+            <if test="receiverCity != null and receiverCity != ''">
+                receiver_city = #{receiverCity},
+            </if>
+            <if test="receiverDistrict != null and receiverDistrict != ''">
+                receiver_district = #{receiverDistrict},
+            </if>
+            <if test="receiverAddress != null and receiverAddress != ''">
+                receiver_address = #{receiverAddress},
+            </if>
+            <if test="receiverZip != null and receiverZip != ''">
+                receiver_zip = #{receiverZip},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--查询单个-->
+    <select id="queryByIdandUidAndShipping" resultMap="MallShippingMap">
+        select
+        id, user_id, receiver_name, receiver_phone, receiver_mobile, receiver_province, receiver_city, receiver_district, receiver_address, receiver_zip, create_time, update_time
+        from yihan_shop.mall_shipping
+        <where>
+            id = #{shippingId}
+            and user_id = #{uid}
+        </where>
+
+    </select>
+
+    <!--通过主键删除-->
+    <select id="selectBySet" resultMap="MallShippingMap">
+        select
+        id, user_id, receiver_name, receiver_phone, receiver_mobile, receiver_province, receiver_city, receiver_district, receiver_address, receiver_zip, create_time, update_time
+        from yihan_shop.mall_shipping
+        <where>
+            <if test="idSet.size() > 0">
+                id in
+                <foreach collection="idSet" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+</mapper>

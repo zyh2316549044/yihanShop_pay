@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: root
+    url: jdbc:mysql://127.0.0.1:3306/yihan_shop?characterEncoding=utf-8&useSSL=false
+  rabbitmq:
+    addresses: 39.98.224.85
+    port: 5672
+    username: guest
+    password: guest
+  redis:
+    host: 127.0.0.1
+    port: 6379
+
+mybatis:
+  configuration:
+    #配置和数据库映射大小写
+    map-underscore-to-camel-case: true
+    #控制台打印语句
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:mapper/*.xml
+
+logging:
+  pattern:
+    console: "[%thread] %-5level %logger{36} - %msg%n"
+    #防止和pay项目支付端口冲突改变端口
+server:
+  port: 8081

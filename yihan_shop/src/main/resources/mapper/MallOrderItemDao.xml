@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.yihan_shop.dao.MallOrderItemDao">
+
+    <resultMap type="com.demo.yihan_shop.entity.MallOrderItem" id="MallOrderItemMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="orderNo" column="order_no" jdbcType="INTEGER"/>
+        <result property="productId" column="product_id" jdbcType="INTEGER"/>
+        <result property="productName" column="product_name" jdbcType="VARCHAR"/>
+        <result property="productImage" column="product_image" jdbcType="VARCHAR"/>
+        <result property="currentUnitPrice" column="current_unit_price" jdbcType="NUMERIC"/>
+        <result property="quantity" column="quantity" jdbcType="INTEGER"/>
+        <result property="totalPrice" column="total_price" jdbcType="NUMERIC"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="MallOrderItemMap">
+        select
+          id, user_id, order_no, product_id, product_name, product_image, current_unit_price, quantity, total_price, create_time, update_time
+        from yihan_shop.mall_order_item
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="MallOrderItemMap">
+        select
+          id, user_id, order_no, product_id, product_name, product_image, current_unit_price, quantity, total_price, create_time, update_time
+        from yihan_shop.mall_order_item
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="MallOrderItemMap">
+        select
+          id, user_id, order_no, product_id, product_name, product_image, current_unit_price, quantity, total_price, create_time, update_time
+        from yihan_shop.mall_order_item
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="orderNo != null">
+                and order_no = #{orderNo}
+            </if>
+            <if test="productId != null">
+                and product_id = #{productId}
+            </if>
+            <if test="productName != null and productName != ''">
+                and product_name = #{productName}
+            </if>
+            <if test="productImage != null and productImage != ''">
+                and product_image = #{productImage}
+            </if>
+            <if test="currentUnitPrice != null">
+                and current_unit_price = #{currentUnitPrice}
+            </if>
+            <if test="quantity != null">
+                and quantity = #{quantity}
+            </if>
+            <if test="totalPrice != null">
+                and total_price = #{totalPrice}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into yihan_shop.mall_order_item(user_id, order_no, product_id, product_name, product_image, current_unit_price, quantity, total_price, create_time, update_time)
+        values (#{userId}, #{orderNo}, #{productId}, #{productName}, #{productImage}, #{currentUnitPrice}, #{quantity}, #{totalPrice}, #{createTime}, #{updateTime})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update yihan_shop.mall_order_item
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="orderNo != null">
+                order_no = #{orderNo},
+            </if>
+            <if test="productId != null">
+                product_id = #{productId},
+            </if>
+            <if test="productName != null and productName != ''">
+                product_name = #{productName},
+            </if>
+            <if test="productImage != null and productImage != ''">
+                product_image = #{productImage},
+            </if>
+            <if test="currentUnitPrice != null">
+                current_unit_price = #{currentUnitPrice},
+            </if>
+            <if test="quantity != null">
+                quantity = #{quantity},
+            </if>
+            <if test="totalPrice != null">
+                total_price = #{totalPrice},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <select id="selectByOrderNoSet" resultMap="MallOrderItemMap">
+        select
+        id, user_id, order_no, product_id, product_name, product_image, current_unit_price, quantity, total_price, create_time, update_time
+        from yihan_shop.mall_order_item
+        <where>
+        <if test="orderNoSet.size() > 0">
+            order_no in
+            <foreach collection="orderNoSet" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <delete id="deleteById">
+        delete from yihan_shop.mall_order_item where id = #{id}
+    </delete>
+
+    <!--查询单个-->
+    <insert id="batchInsert" keyProperty="id" useGeneratedKeys="true">
+        insert into yihan_shop.mall_order_item(user_id, order_no, product_id, product_name, product_image, current_unit_price, quantity, total_price)
+        values
+        <foreach collection="mallOrderItemList" index="index" item="item" separator=",">
+            (#{item.userId},
+            #{item.orderNo},
+            #{item.productId},
+            #{item.productName},
+            #{item.productImage},
+            #{item.currentUnitPrice},
+            #{item.quantity},
+            #{item.totalPrice}
+            )
+        </foreach>
+    </insert>
+</mapper>

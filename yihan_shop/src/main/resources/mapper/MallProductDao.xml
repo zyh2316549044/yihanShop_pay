@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.yihan_shop.dao.MallProductDao">
+
+    <resultMap type="com.demo.yihan_shop.entity.MallProduct" id="MallProductMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="categoryId" column="category_id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="subtitle" column="subtitle" jdbcType="VARCHAR"/>
+        <result property="mainImage" column="main_image" jdbcType="VARCHAR"/>
+        <result property="subImages" column="sub_images" jdbcType="VARCHAR"/>
+        <result property="detail" column="detail" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="NUMERIC"/>
+        <result property="stock" column="stock" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="incal_com">
+          id, category_id, name, subtitle, main_image, sub_images, detail, price, stock, status, create_time, update_time
+    </sql>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="MallProductMap">
+        select
+          id, category_id, name, subtitle, main_image, sub_images, detail, price, stock, status, create_time, update_time
+        from yihan_shop.mall_product
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="MallProductMap">
+        select
+        <include refid="incal_com"></include>
+        from yihan_shop.mall_product
+        where status = 1
+        <if test="categoryIdSet.size() > 0">
+            and category_id in
+            <foreach collection="categoryIdSet" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+
+        </if>
+        LIMIt #{pageNum},#{pageSize}
+    </select>
+    <!--查询数据-->
+    <select id="queryAllByProductId" resultMap="MallProductMap">
+        select
+        <include refid="incal_com"></include>
+        from yihan_shop.mall_product
+        <where>
+        <if test="productIdSet.size() > 0">
+             id in
+            <foreach collection="productIdSet" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        </where>
+    </select>
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="MallProductMap">
+        select
+          id, category_id, name, subtitle, main_image, sub_images, detail, price, stock, status, create_time, update_time
+        from yihan_shop.mall_product
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="subtitle != null and subtitle != ''">
+                and subtitle = #{subtitle}
+            </if>
+            <if test="mainImage != null and mainImage != ''">
+                and main_image = #{mainImage}
+            </if>
+            <if test="subImages != null and subImages != ''">
+                and sub_images = #{subImages}
+            </if>
+            <if test="detail != null and detail != ''">
+                and detail = #{detail}
+            </if>
+            <if test="price != null">
+                and price = #{price}
+            </if>
+            <if test="stock != null">
+                and stock = #{stock}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into yihan_shop.mall_product(category_id, name, subtitle, main_image, sub_images, detail, price, stock, status, create_time, update_time)
+        values (#{categoryId}, #{name}, #{subtitle}, #{mainImage}, #{subImages}, #{detail}, #{price}, #{stock}, #{status}, #{createTime}, #{updateTime})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update yihan_shop.mall_product
+        <set>
+            <if test="categoryId != null">
+                category_id = #{categoryId},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="subtitle != null and subtitle != ''">
+                subtitle = #{subtitle},
+            </if>
+            <if test="mainImage != null and mainImage != ''">
+                main_image = #{mainImage},
+            </if>
+            <if test="subImages != null and subImages != ''">
+                sub_images = #{subImages},
+            </if>
+            <if test="detail != null and detail != ''">
+                detail = #{detail},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="stock != null">
+                stock = #{stock},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from yihan_shop.mall_product where id = #{id}
+    </delete>
+
+</mapper>
